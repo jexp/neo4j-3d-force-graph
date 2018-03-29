@@ -15,7 +15,7 @@
 	const session = driver.session();
 	const start = new Date()
     session
-      .run('MATCH (n) WITH n MATCH (n)-->(m) RETURN { id: id(n), label:head(labels(n)), caption:n.name } as source, { id: id(m), label:head(labels(m)), caption:m.name } as target LIMIT $limit', {limit: 10000})
+      .run('MATCH (n) WITH n MATCH (n)-->(m) RETURN { id: id(n), label:head(labels(n)), caption:n.name } as source, { id: id(m), label:head(labels(m)), caption:m.name } as target LIMIT $limit', {limit: 5000})
       .then(function (result) {
         const nodes = {}
         const links = result.records.map(r => { 
