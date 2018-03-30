@@ -9,6 +9,10 @@ The pages load 5000 relationships from your graph at bolt://localhost, you might
 * link:{base}/index.html[basic loading^] just using the id's (fastest) link:index.html[index.html]
 * link:{base}/incremental.html[incremental loading^] each row from the driver result is added to the graph incrementally link:incremental.html[incremental.html]
 * link:{base}/color.html[color by label and caption on hover^] loads `{ id: id(n), label:head(labels(n)), caption:n.name }` per node link:color.html[color.html]
+* link:{base}/weights.html[node size and rel-weight^] loads `{ id: id(m), label:head(labels(m)), caption:m.name, size:m.pagerank }` as node, `{weight:log(r.weight), type:type(r)}` as relationships link:weights.html[weights.html]
 
+.Color and Caption on Paradise Papers
 image::labels-info.jpg[width=600]
 
+.Weights on Game Of Thrones
+image::weights-got.jpg[width=600]
