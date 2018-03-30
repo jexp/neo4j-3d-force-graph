@@ -18,7 +18,7 @@
     session
       .run('MATCH (n) WITH n MATCH (n)-->(m) RETURN  id as source, id(m) as target LIMIT $limit', {limit: 5000})
       .then(function (result) {
-        const links = result.records.forEach(r => { 
+         result.records.forEach(r => { 
 	       const { nodes, links } = Graph.graphData();
            const link={source:r.get('source').toNumber(), target:r.get('target').toNumber()}
            Graph.graphData({

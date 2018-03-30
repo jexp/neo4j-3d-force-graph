@@ -15,7 +15,7 @@
 	const session = driver.session();
 	const start = new Date()
     session
-      .run('MATCH (n) WITH n MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), caption:n.name, size:n.pagerank } as source, { id: id(m), label:head(labels(m)), caption:m.name, size:m.pagerank } as target, {weight:log(r.weight), type:type(r)} as rel LIMIT $limit', {limit: 5000})
+      .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), caption:n.name, size:n.pagerank } as source, { id: id(m), label:head(labels(m)), caption:m.name, size:m.pagerank } as target, {weight:log(r.weight), type:type(r)} as rel LIMIT $limit', {limit: 5000})
       .then(function (result) {
         const nodes = {}
         const links = result.records.map(r => { 
@@ -35,7 +35,6 @@
                       .nodeVal('size')
                       .linkAutoColorBy('type')
                       .linkWidth('weight')
-//                      .linkDirectionalParticles(10)
                       .nodeLabel(node => `${node.label}: ${node.caption}`)
                       .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null);
       })

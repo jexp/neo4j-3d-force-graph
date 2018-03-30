@@ -4,15 +4,134 @@ Some experiments using Data in Neo4j to render 3d graphs using three-js via http
 
 These pages use the Neo4j javascript driver to query the graph for some basic data and render it in the 3d-graph.
 
+Please note that the JS driver uses a custom Number object, which we have to turn into JS integers with `value.toNumber()`.
+
 The pages load 5000 relationships from your graph at bolt://localhost, you might need to set auth (default is user: neo4j, password: test)
 
-* link:{base}/index.html[basic loading^] just using the id's (fastest) link:index.html[index.html]
-* link:{base}/incremental.html[incremental loading^] each row from the driver result is added to the graph incrementally link:incremental.html[incremental.html]
-* link:{base}/color.html[color by label and caption on hover^] loads `{ id: id(n), label:head(labels(n)), caption:n.name }` per node link:color.html[color.html]
-* link:{base}/weights.html[node size and rel-weight^] loads `{ id: id(m), label:head(labels(m)), caption:m.name, size:m.pagerank }` as node, `{weight:log(r.weight), type:type(r)}` as relationships link:weights.html[weights.html]
+== Basic Loading
+
+basic loading: just using the id's (fastest)
+
+[source,cypher]
+----
+MATCH (n)-->(m) RETURN id(n) as source, id(m) as target LIMIT $limit
+----
+
+[source,javascript]
+----
+ForceGraph3D()(document.getElementById('3d-graph')).graphData(gData)
+----
+
+link:{base}/index.html[Render Example^] | link:index.html[Code^]
+
+== Incremental Loading
+
+Incremental loading: each row from the driver result is added to the graph incrementally
+
+[source,javascript]
+----
+result.records.forEach(r => { 
+   const { nodes, links } = Graph.graphData();
+   const link={source:r.get('source').toNumber(), target:r.get('target').toNumber()}
+   Graph.graphData({
+        nodes: [...nodes, { id:link.source }, { id: link.target}],
+        links: [...links, link]
+    });
+});        
+----
+
+link:{base}/incremental.html[Render Example^] | link:incremental.html[Code^]
+
+== Color and Caption
+
+
+color by label and text caption on hover
+
+
+[source,cypher]
+----
+MATCH (n)-->(m) 
+RETURN { id: id(n), label:head(labels(n)), caption:n.name } as source, 
+       { id: id(m), label:head(labels(m)), caption:m.name } as target 
+LIMIT $limit
+----
+
+[source,javascript]
+----
+const Graph = ForceGraph3D()(elem)
+              .graphData(gData)
+              .nodeAutoColorBy('label')
+              .nodeLabel(node => `${node.label}: ${node.caption}`)
+              .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null);
+----
+
+link:{base}/color.html[Render Example^] | link:color.html[Code^]
+
 
 .Color and Caption on Paradise Papers
 image::labels-info.jpg[width=600]
 
+== Weights for Node and Relationship Sizes
+
+Use weight on node (e.g. pagerank) and on relationship to render different sizes.
+Also color relationships by type. We use log(weight) for relationships as they would groth too thick otherwise.
+
+[source,cypher]
+----
+MATCH (n)-[r]->(m) 
+RETURN { id: id(n), label:head(labels(n)), caption:n.name, size:n.pagerank } as source, 
+       { id: id(m), label:head(labels(m)), caption:m.name, size:m.pagerank } as target, 
+       { weight:log(r.weight), type:type(r)} as rel 
+LIMIT $limit
+----
+
+[source,javascript]
+----
+const Graph = ForceGraph3D()(elem)
+              .graphData(gData)
+              .nodeAutoColorBy('label')
+              .nodeVal('size')
+              .linkAutoColorBy('type')
+              .linkWidth('weight')
+              .nodeLabel(node => `${node.label}: ${node.caption}`)
+              .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null);
+----
+
+
+link:{base}/weights.html[Render Example^] | link:weights.html[Code^]
+
 .Weights on Game Of Thrones
 image::weights-got.jpg[width=600]
+
+== Particles & Cluster Coloring
+
+Color nodes and relationships by community/cluster id.
+Use particles for relationships to render their weight, here we use the original weight as it represents the number of particles traveling.
+
+[source,cypher]
+----
+MATCH (n)-[r]->(m) 
+RETURN { id: id(n), label:head(labels(n)), community:n.louvain, caption:n.name, size:n.pagerank } as source, 
+       { id: id(m), label:head(labels(m)), community:n.louvain, caption:m.name, size:m.pagerank } as target, 
+       { weight:r.weight, type:type(r), community:case when n.community < m.community then n.community else m.community end} as rel 
+LIMIT $limit
+----
+
+[source,javascript]
+----
+const Graph = ForceGraph3D()(elem)
+              .graphData(gData)
+              .nodeAutoColorBy('community')
+              .nodeVal('size')
+              .linkAutoColorBy('community')
+              .linkWidth(0)
+              .linkDirectionalParticles('weight') // number of particles
+              .linkDirectionalParticleSpeed(0.001) // slow down
+              .nodeLabel(node => `${node.label}: ${node.caption}`)
+              .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null);
+----
+
+link:{base}/particles.html[Render Example^] | link:particles.html[Code^]
+
+.Particles and Clusters on Game Of Thrones
+image::particles-got.jpg[width=600]
