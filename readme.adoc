@@ -22,6 +22,8 @@ MATCH (n)-->(m) RETURN id(n) as source, id(m) as target LIMIT $limit
 ForceGraph3D()(document.getElementById('3d-graph')).graphData(gData)
 ----
 
+image::{base}/basic.jpg[width=600]
+
 link:{base}/index.html[Render Example^] | link:index.html[Code^]
 
 == Incremental Loading
@@ -69,7 +71,7 @@ link:{base}/color.html[Render Example^] | link:color.html[Code^]
 
 
 .Color and Caption on Paradise Papers
-image::labels-info.jpg[width=600]
+image::{base}/labels-info.jpg[width=600]
 
 == Weights for Node and Relationship Sizes
 
@@ -101,7 +103,7 @@ const Graph = ForceGraph3D()(elem)
 link:{base}/weights.html[Render Example^] | link:weights.html[Code^]
 
 .Weights on Game Of Thrones
-image::weights-got.jpg[width=600]
+image::{base}/weights-got.jpg[width=600]
 
 == Particles & Cluster Coloring
 
@@ -134,4 +136,4 @@ const Graph = ForceGraph3D()(elem)
 link:{base}/particles.html[Render Example^] | link:particles.html[Code^]
 
 .Particles and Clusters on Game Of Thrones
-image::particles-got.jpg[width=600]
+image::{base}/particles-got.jpg[width=600]
