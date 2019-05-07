@@ -10,7 +10,7 @@
   <div id="3d-graph"></div>
 
   <script>
-    const driver = neo4j.v1.driver("bolt+routing://90bfd895.databases.neo4j.io", neo4j.v1.auth.basic("got", "got"));
+    const driver = neo4j.v1.driver("bolt+routing://90bfd895.databases.neo4j.io", neo4j.v1.auth.basic("got", "got"),{encrypted: ENCRYPTION_ON});
 	const session = driver.session();
 	const start = new Date()
     session
