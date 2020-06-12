@@ -2,7 +2,7 @@
   <style> body { margin: 0; } </style>
 
   <script src="//unpkg.com/3d-force-graph"></script>
-  <script src="//cdn.rawgit.com/neo4j/neo4j-javascript-driver/1.2/lib/browser/neo4j-web.min.js"></script>
+  <script src="https://unpkg.com/neo4j-driver"></script>
   <!--<script src="../../dist/3d-force-graph.js"></script>-->
 </head>
 
@@ -10,13 +10,13 @@
   <div id="3d-graph"></div>
 
   <script>
-    const driver = neo4j.v1.driver("bolt+routing://90bfd895.databases.neo4j.io", neo4j.v1.auth.basic("got", "got"),{encrypted: true});
+    const driver = neo4j.driver("bolt://demo.neo4jlabs.com", neo4j.auth.basic("gameofthrones", "gameofthrones"),{encrypted: true});
     const Graph = ForceGraph3D()(document.getElementById('3d-graph')).graphData({ nodes: [], links: []});
 
-	const session = driver.session();
+	const session = driver.session({database:"gameofthrones"});
 	const start = new Date()
     session
-      .run('MATCH (n) WITH n MATCH (n)-->(m) RETURN  id as source, id(m) as target LIMIT $limit', {limit: 5000})
+      .run('MATCH (n) WITH n MATCH (n)-->(m) RETURN id(n) as source, id(m) as target LIMIT $limit', {limit: neo4j.int(5000)})
       .then(function (result) {
          result.records.forEach(r => { 
 	       const { nodes, links } = Graph.graphData();

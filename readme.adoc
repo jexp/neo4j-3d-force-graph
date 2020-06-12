@@ -2,11 +2,12 @@
 
 Some experiments using Data in Neo4j to render 3d graphs using three-js via https://github.com/vasturiano/3d-force-graph[3d-force-graph] which is a really cool repository.
 
-These pages use the Neo4j javascript driver to query the graph for some basic data and render it in the 3d-graph.
+These pages use the latest Neo4j javascript driver to query the graph for some basic data and render it in the 3d-graph.
 
-Please note that the JS driver uses a custom Number object, which we have to turn into JS integers with `value.toNumber()`.
+Please note that the JS driver uses a custom Number object, which we have to turn into JS integers with `value.toNumber()` and wrap int values we send to the server like the limit in `neo4j.int`.
 
-The pages load 5000 relationships from your graph at bolt://localhost, you might need to set auth (default is user: neo4j, password: test)
+The example pages load 5000 relationships from the GameOfThrones graph at link:bolt://demo.neo4jlabs.com[https://demo.neo4jlabs.com:7473]
+You might need to change auth and database (default: database/user/password: gameofthrones)
 
 == Basic Loading
 

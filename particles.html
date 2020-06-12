@@ -2,7 +2,7 @@
   <style> body { margin: 0; } </style>
 
   <script src="//unpkg.com/3d-force-graph"></script>
-  <script src="//cdn.rawgit.com/neo4j/neo4j-javascript-driver/1.2/lib/browser/neo4j-web.min.js"></script>
+  <script src="https://unpkg.com/neo4j-driver"></script>
   <!--<script src="../../dist/3d-force-graph.js"></script>-->
 </head>
 
@@ -11,11 +11,11 @@
 
   <script>
     const elem = document.getElementById('3d-graph');
-    const driver = neo4j.v1.driver("bolt+routing://90bfd895.databases.neo4j.io", neo4j.v1.auth.basic("got", "got"),{encrypted: true});
-	const session = driver.session();
+    const driver = neo4j.driver("bolt://demo.neo4jlabs.com", neo4j.auth.basic("gameofthrones", "gameofthrones"),{encrypted: true});
+	const session = driver.session({database:"gameofthrones"});
 	const start = new Date()
     session
-      .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), community:n.louvain, caption:n.name, size:n.pagerank } as source, { id: id(m), label:head(labels(m)), community:n.louvain, caption:m.name, size:m.pagerank } as target, {weight:r.weight, type:type(r), community:case when n.community < m.community then n.community else m.community end} as rel LIMIT $limit', {limit: 5000})
+      .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), community:n.louvain, caption:n.name, size:n.pagerank } as source, { id: id(m), label:head(labels(m)), community:n.louvain, caption:m.name, size:m.pagerank } as target, {weight:r.weight, type:type(r), community:case when n.community < m.community then n.community else m.community end} as rel LIMIT $limit', {limit: neo4j.int(5000)})
       .then(function (result) {
         const nodes = {}
         const links = result.records.map(r => { 
@@ -36,7 +36,7 @@
                       .linkAutoColorBy('community')
                       .linkWidth(0)
                       .linkDirectionalParticles('weight')
-                      .linkDirectionalParticleSpeed(0.001)
+                      .linkDirectionalParticleSpeed('weight')
                       .nodeLabel(node => `${node.label}: ${node.caption}`)
                       .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null);
       })
