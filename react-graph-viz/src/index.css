@@ -11,3 +11,67 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Semantic UI */
+@import url(https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css);
+
+/* Login Form Styling */
+.login .logo img {
+  display: block;
+  width: 120px;
+  margin: 0 auto 24px;
+}
+
+.login {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f2f2f2;
+}
+.login .column {
+  width: 100% !important;
+  max-width: 420px  !important;
+}
+.login .ui.form {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.login .ui.form select {
+  height: 38px;
+}
+.login .ui.form  .switch {
+  display: block;
+  padding: 12px 0 0;
+ text-align: center;
+}
+
+.form-group:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+.form-buttons {
+  display: flex;
+  margin-bottom: 12px
+}
+
+.form-buttons button {
+  flex: 1;
+}
+
+.login .aligned {
+  text-align: center;
+  margin-top: 24px;
+  cursor: pointer;
+}
+.login .footer {
+  opacity: .6;
+  margin-top: 24px;
+  text-align: center;
+}

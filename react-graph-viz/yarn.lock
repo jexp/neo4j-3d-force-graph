@@ -7117,6 +7117,16 @@ neo4j-driver@^4.0.2:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
+neo4j-driver@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-4.1.2.tgz#b7dc520a8b64b7dccd143058cf6cdf6fd6cb9ccd"
+  integrity sha512-hD13lwOuWi53IorgxL0/7HdBrR74VsQTMzZbp45a5e+vhciGtkqsfPH4oy33g+UOeORmxQ1y/lLnKpYe0Ll6xg==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    rxjs "^6.5.2"
+    text-encoding-utf-8 "^1.0.2"
+    uri-js "^4.2.2"
+
 next-tick@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
@@ -10483,6 +10493,14 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-neo4j@^0.2.17:
+  version "0.2.17"
+  resolved "https://registry.yarnpkg.com/use-neo4j/-/use-neo4j-0.2.17.tgz#b049ddfb352e96a751c1093246e9934f034d65bf"
+  integrity sha512-g/G3y7RADOnERjxRDJMBnyn1FODumLLmLnVLgRHtKdRSt7NbkkjMpSBs6fOJlzt/M5S4KbkyFw+eXl8OHNKMBg==
+  dependencies:
+    neo4j-driver "^4.1.2"
+    react-dom "^16.13.1"
 
 use@^3.1.0:
   version "3.1.1"
